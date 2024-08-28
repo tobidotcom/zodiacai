@@ -1,6 +1,10 @@
 function nextStep(currentStep) {
+    console.log(`Current Step: ${currentStep}`);
     const currentStepElement = document.getElementById(`step${currentStep}`);
     const nextStepElement = document.getElementById(`step${currentStep + 1}`);
+    
+    console.log(`Current Step Element:`, currentStepElement);
+    console.log(`Next Step Element:`, nextStepElement);
     
     if (currentStepElement.checkValidity()) {
         currentStepElement.classList.remove('active');
@@ -9,29 +13,3 @@ function nextStep(currentStep) {
         currentStepElement.reportValidity();
     }
 }
-
-document.getElementById('surveyForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-
-    fetch('/moon-reading', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        a.download = 'moon_reading.mp3';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    })
-    .catch(error => console.error('Error:', error));
-});
