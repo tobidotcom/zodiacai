@@ -1,0 +1,47 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+
+# Environment variables file
+.env
+
+# Docker files
+Dockerfile
+docker-compose.yml
+
+# IDE/editor configuration
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Flask cache
+instance/
+*.pyo
+*.pyd
+
+# Local virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Coverage reports
+.coverage
+*.cover
+coverage.xml
+nosetests.xml
+test_coverage.xml
+*.lcov
+
+# Pytest
+.cache/
+*.pytest_cache/
