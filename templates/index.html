@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moon Reading Survey</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form id="surveyForm">
+            <div class="step active" id="step1">
+                <label for="zodiac_sign">Choose your Zodiac Sign:</label>
+                <select id="zodiac_sign" name="zodiac_sign" required>
+                    <option value="">Select...</option>
+                    <option value="Aries">Aries</option>
+                    <option value="Taurus">Taurus</option>
+                    <option value="Gemini">Gemini</option>
+                    <option value="Cancer">Cancer</option>
+                    <option value="Leo">Leo</option>
+                    <option value="Virgo">Virgo</option>
+                    <option value="Libra">Libra</option>
+                    <option value="Scorpio">Scorpio</option>
+                    <option value="Sagittarius">Sagittarius</option>
+                    <option value="Capricorn">Capricorn</option>
+                    <option value="Aquarius">Aquarius</option>
+                    <option value="Pisces">Pisces</option>
+                </select>
+                <button type="button" onclick="nextStep(1)">Next</button>
+            </div>
+            <div class="step" id="step2">
+                <label for="name">Enter your Name:</label>
+                <input type="text" id="name" name="name" required>
+                <button type="button" onclick="nextStep(2)">Next</button>
+            </div>
+            <div class="step" id="step3">
+                <label for="birth_date">Enter your Birth Date:</label>
+                <input type="date" id="birth_date" name="birth_date" required>
+                <button type="button" onclick="nextStep(3)">Next</button>
+            </div>
+            <div class="step" id="step4">
+                <label for="birth_location">Enter your Birth Location:</label>
+                <input type="text" id="birth_location" name="birth_location" required>
+                <button type="button" onclick="nextStep(4)">Next</button>
+            </div>
+            <div class="step" id="step5">
+                <label for="birth_time">Enter your Birth Time:</label>
+                <input type="time" id="birth_time" name="birth_time" required>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

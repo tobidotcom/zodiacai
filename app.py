@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
-import requests
+from flask import Flask, request, jsonify, render_template
+import openai
 import os
+import requests
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -12,6 +13,12 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 # Check if the API key is loaded
 if not OPENAI_API_KEY:
     raise ValueError("API key is missing in the .env file.")
+
+openai.api_key = OPENAI_API_KEY
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/moon-reading', methods=['POST'])
 def moon_reading():
@@ -32,27 +39,14 @@ def moon_reading():
         prompt = (f"Generate a personalized moon reading for a person named {name} with zodiac sign {zodiac_sign}, "
                   f"born on {birth_date} in {birth_location} at {birth_time}.")
 
-        # Call OpenAI API for chat completion
-        chat_response = requests.post(
-            'https://api.openai.com/v1/chat/completions',
-            headers={
-                'Authorization': f'Bearer {OPENAI_API_KEY}',
-                'Content-Type': 'application/json'
-            },
-            json={
-                'model': 'gpt-4',
-                'messages': [
-                    {"role": "system", "content": "You are a helpful assistant that provides moon readings."},
-                    {"role": "user", "content": prompt}
-                ],
-                'max_tokens': 150
-            }
+        # Call OpenAI API for text generation
+        response = openai.Completion.create(
+            model="gpt-4",  # Ensure this is the correct model identifier
+            prompt=prompt,
+            max_tokens=150
         )
 
-        if chat_response.status_code != 200:
-            return jsonify({'error': 'Failed to generate moon reading'}), chat_response.status_code
-
-        moon_reading_text = chat_response.json()['choices'][0]['message']['content'].strip()
+        moon_reading_text = response.choices[0].text.strip()
 
         # Call OpenAI TTS API for speech generation
         tts_response = requests.post(
@@ -62,9 +56,9 @@ def moon_reading():
                 'Content-Type': 'application/json'
             },
             json={
-                'model': 'tts-1',
+                'model': 'tts-1',  # Make sure this model is correct
                 'input': moon_reading_text,
-                'voice': 'onyx',
+                'voice': 'onyx',  # Replace with the desired voice
                 'response_format': 'mp3'
             }
         )
