@@ -10,9 +10,17 @@ $headers = @{
     "Content-Type" = "application/json"
 }
 
-$response = Invoke-RestMethod -Uri "http://localhost:5002/moon-reading" -Method Post -Body $body -Headers $headers -ContentType "application/json"
+try {
+    $response = Invoke-RestMethod -Uri "http://localhost:5002/moon-reading" -Method Post -Body $body -Headers $headers -ContentType "application/json"
 
-# Save the audio response to a file
-[System.IO.File]::WriteAllBytes("moon_reading.mp3", $response)
-
-Write-Host "Moon reading audio saved as moon_reading.mp3"
+    if ($response) {
+        [System.IO.File]::WriteAllBytes("moon_reading.mp3", $response)
+        Write-Host "Moon reading audio saved as moon_reading.mp3"
+    } else {
+        Write-Host "Response is empty. Check if the API returned any data."
+    }
+} catch {
+    Write-Host "An error occurred: $_"
+    Write-Host "StatusCode:" $_.Exception.Response.StatusCode.value__
+    Write-Host "StatusDescription:" $_.Exception.Response.StatusDescription
+}
